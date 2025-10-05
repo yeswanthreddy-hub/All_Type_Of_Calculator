@@ -10,6 +10,27 @@ export function formatNumber(value) {
   return rounded.toLocaleString('en-US', { maximumFractionDigits: 8 })
 }
 
+/**
+ * Convert a computed number to a plain string with no thousands separators.
+ * Used for values that stay editable on a keypad, because a separator such
+ * as "," would be parsed as garbage if the user keeps typing.
+ */
+export function toPlainString(value) {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return 'Error'
+  return String(Math.round(value * 1e8) / 1e8)
+}
+
+/**
+ * Format a raw keypad string for display: adds thousands separators but
+ * keeps a decimal point the user is still typing (e.g. "1." stays "1.").
+ */
+export function formatDisplayValue(input) {
+  if (input === 'Error') return 'Error'
+  const trailingDot = input.endsWith('.')
+  const formatted = formatNumber(parseFloat(trailingDot ? input.slice(0, -1) : input))
+  return trailingDot ? `${formatted}.` : formatted
+}
+
 /** Format a number as currency (2 decimals, thousands separators). */
 export function formatCurrency(value) {
   if (typeof value !== 'number' || !Number.isFinite(value)) return '—'

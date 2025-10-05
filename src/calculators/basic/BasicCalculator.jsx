@@ -9,7 +9,7 @@ import {
   FaTimes,
 } from 'react-icons/fa'
 import { TbPlusMinus } from 'react-icons/tb'
-import { formatNumber } from '../../utils/format'
+import { formatDisplayValue, formatNumber, toPlainString } from '../../utils/format'
 
 function calculate(a, b, op) {
   switch (op) {
@@ -74,7 +74,7 @@ function BasicCalculator() {
   const percent = () => {
     const value = parseFloat(display)
     if (Number.isNaN(value) || value === 0) return
-    setDisplay(formatNumber(value / 100))
+    setDisplay(toPlainString(value / 100))
   }
 
   const applyOperator = (op) => {
@@ -83,7 +83,7 @@ function BasicCalculator() {
     if (operator !== null && !waiting) {
       const result = calculate(accumulator, value, operator)
       setAccumulator(result)
-      setDisplay(formatNumber(result))
+      setDisplay(toPlainString(result))
     } else {
       setAccumulator(value)
     }
@@ -95,13 +95,15 @@ function BasicCalculator() {
     if (operator === null || accumulator === null || display === 'Error') return
     const value = parseFloat(display)
     const result = calculate(accumulator, value, operator)
-    setDisplay(formatNumber(result))
+    setDisplay(toPlainString(result))
     setAccumulator(null)
     setOperator(null)
     setWaiting(false)
   }
 
-  const show = display === 'Error' ? display : formatNumber(parseFloat(display))
+  // `display` holds the raw typed string (never formatted), so a result can
+  // still be edited; only the rendered output gets thousands separators.
+  const show = formatDisplayValue(display)
 
   return (
     <div>
