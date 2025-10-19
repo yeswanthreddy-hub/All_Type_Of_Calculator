@@ -34,6 +34,7 @@ function AverageCalculator() {
           min: sorted[0],
           max: sorted[sorted.length - 1],
           median: median(sorted),
+          range: sorted[sorted.length - 1] - sorted[0],
         }
       : null
 
@@ -59,6 +60,7 @@ function AverageCalculator() {
           <ResultRow label="Median" value={formatNumber(stats.median)} />
           <ResultRow label="Min" value={formatNumber(stats.min)} />
           <ResultRow label="Max" value={formatNumber(stats.max)} />
+          <ResultRow label="Range" value={formatNumber(stats.range)} />
         </ResultCard>
       )}
     </form>
