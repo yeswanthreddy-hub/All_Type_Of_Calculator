@@ -1,0 +1,870 @@
+/* ============================================================
+   All Type Calculator — theme
+   Dark cosmic base with aqua / baby-pink / light-green accents,
+   glow effects, 3D pressable keys, glass cards and smooth motion.
+   ============================================================ */
+
+:root {
+  /* palette */
+  --bg: #070b15;
+  --bg-2: #0c1322;
+  --surface: rgba(255, 255, 255, 0.045);
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --surface-3: rgba(255, 255, 255, 0.13);
+  --border: rgba(255, 255, 255, 0.11);
+  --border-strong: rgba(255, 255, 255, 0.2);
+
+  --aqua: #2dd4bf;
+  --aqua-bright: #5eead4;
+  --pink: #f9a8d4;
+  --pink-bright: #fbcfe8;
+  --green: #86efac;
+  --green-bright: #bbf7d0;
+
+  --text: #eaf2ff;
+  --text-muted: #93a4c0;
+  --danger: #fb7185;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+
+  /* brand gradients */
+  --grad-brand: linear-gradient(
+    120deg,
+    var(--aqua-bright) 0%,
+    #67e8f9 30%,
+    var(--pink) 65%,
+    var(--green-bright) 100%
+  );
+  --grad-btn: linear-gradient(135deg, var(--aqua) 0%, #22d3ee 45%, var(--pink) 100%);
+
+  /* motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 0.15s;
+  --t: 0.25s;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--aqua-bright);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  font-family: var(--mono);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 0.9em;
+  color: var(--pink-bright);
+}
+
+/* ================= Floating background orbs ================= */
+
+.bg-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-orbs span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.55;
+  animation: orb-float 18s var(--ease) infinite alternate;
+}
+
+.bg-orbs .orb-aqua {
+  width: 520px;
+  height: 520px;
+  top: -180px;
+  left: -140px;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.5), transparent 70%);
+}
+
+.bg-orbs .orb-pink {
+  width: 460px;
+  height: 460px;
+  top: -120px;
+  right: -120px;
+  background: radial-gradient(circle, rgba(249, 168, 212, 0.42), transparent 70%);
+  animation-delay: -6s;
+}
+
+.bg-orbs .orb-green {
+  width: 560px;
+  height: 560px;
+  bottom: -220px;
+  left: 30%;
+  background: radial-gradient(circle, rgba(134, 239, 172, 0.34), transparent 70%);
+  animation-delay: -12s;
+}
+
+@keyframes orb-float {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(40px, 30px, 0) scale(1.12);
+  }
+}
+
+/* ============================ Layout ============================ */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(7, 11, 21, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-header-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  color: var(--text);
+  transition: transform var(--t) var(--ease);
+}
+
+.brand:hover {
+  text-decoration: none;
+  transform: scale(1.03);
+}
+
+.brand-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  font-size: 20px;
+  color: var(--bg);
+  background: var(--grad-brand);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(45, 212, 191, 0.45), 0 0 24px rgba(249, 168, 212, 0.3);
+  transition: box-shadow var(--t) var(--ease), transform var(--t) var(--ease);
+}
+
+.brand:hover .brand-icon {
+  transform: rotate(-8deg) scale(1.08);
+  box-shadow: 0 6px 22px rgba(45, 212, 191, 0.6), 0 0 34px rgba(249, 168, 212, 0.45);
+}
+
+.app-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: color var(--t), background var(--t), border-color var(--t),
+    box-shadow var(--t);
+}
+
+.app-nav a:hover {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.25), 0 6px 18px rgba(45, 212, 191, 0.15);
+  text-decoration: none;
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 24px 56px;
+  animation: page-in 0.5s var(--ease) both;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ==================== Accent color system ==================== */
+
+.accent-aqua {
+  --accent: var(--aqua);
+  --accent-bright: var(--aqua-bright);
+  --accent-soft: rgba(45, 212, 191, 0.14);
+  --accent-glow: rgba(45, 212, 191, 0.45);
+}
+
+.accent-pink {
+  --accent: var(--pink);
+  --accent-bright: var(--pink-bright);
+  --accent-soft: rgba(249, 168, 212, 0.14);
+  --accent-glow: rgba(249, 168, 212, 0.45);
+}
+
+.accent-green {
+  --accent: var(--green);
+  --accent-bright: var(--green-bright);
+  --accent-soft: rgba(134, 239, 172, 0.14);
+  --accent-glow: rgba(134, 239, 172, 0.4);
+}
+
+/* ============================ Home ============================ */
+
+.hero {
+  text-align: center;
+  padding: 34px 0 10px;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 5vw, 46px);
+  margin: 0 0 12px;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  background: var(--grad-brand);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.hero p {
+  color: var(--text-muted);
+  font-size: 17px;
+  margin: 0 0 40px;
+}
+
+.category-section {
+  margin-bottom: 40px;
+  animation: page-in 0.6s var(--ease) both;
+}
+
+.category-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  margin: 0 0 18px;
+}
+
+.category-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  font-size: 16px;
+  border-radius: 10px;
+  color: var(--accent-bright);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: 0 0 18px var(--accent-soft);
+}
+
+.category-count {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 11px;
+}
+
+.calculator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.calculator-card {
+  display: block;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  color: var(--text);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  transform: translateZ(0);
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease),
+    border-color var(--t);
+}
+
+.calculator-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    320px 160px at 50% -40px,
+    var(--accent-soft),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--t);
+  pointer-events: none;
+}
+
+.calculator-card:hover {
+  text-decoration: none;
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+  transform: perspective(900px) translateY(-8px) rotateX(4deg) rotateY(-3deg)
+    scale(1.02);
+  box-shadow: 0 18px 44px rgba(4, 8, 18, 0.55), 0 0 34px var(--accent-glow);
+}
+
+.calculator-card:hover::before {
+  opacity: 1;
+}
+
+.calculator-card-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  font-size: 24px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  color: var(--accent-bright);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  box-shadow: 0 0 22px var(--accent-soft), inset 0 0 12px var(--accent-soft);
+  transition: transform var(--t) var(--ease), box-shadow var(--t);
+}
+
+.calculator-card:hover .calculator-card-icon {
+  transform: scale(1.12) rotate(-6deg);
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.calculator-card-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  letter-spacing: -0.1px;
+}
+
+.calculator-card-desc {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ===================== Calculator shell / page ===================== */
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  margin-bottom: 22px;
+  transition: color var(--t), background var(--t), border-color var(--t),
+    transform var(--t) var(--ease), box-shadow var(--t);
+}
+
+.back-link:hover {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: 0 6px 18px rgba(45, 212, 191, 0.12);
+  transform: translateX(-4px);
+  text-decoration: none;
+}
+
+.calc-page {
+  position: relative;
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px;
+  max-width: 660px;
+  margin: 0 auto;
+  overflow: hidden;
+  animation: page-in 0.5s var(--ease) both;
+  transition: box-shadow var(--t);
+}
+
+.calc-page::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--grad-brand);
+  background-size: 200% 100%;
+  animation: gradient-shift 8s ease infinite;
+  opacity: 0.9;
+}
+
+.calc-page-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.calc-page-header .calc-icon {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  font-size: 26px;
+  border-radius: 16px;
+  color: var(--accent-bright);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: 0 0 26px var(--accent-soft), inset 0 0 14px var(--accent-soft);
+}
+
+.calc-page h2 {
+  margin: 0;
+  font-size: 25px;
+  letter-spacing: -0.4px;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.calc-page-desc {
+  color: var(--text-muted);
+  font-size: 14.5px;
+  margin: 0 0 26px;
+}
+
+/* ===================== Form fields ===================== */
+
+.calc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.field-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-input {
+  width: 100%;
+  font: inherit;
+  font-size: 15px;
+  color: var(--text);
+  background: rgba(4, 8, 18, 0.55);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  transition: border-color var(--t), box-shadow var(--t), background var(--t);
+}
+
+.field-input::placeholder {
+  color: color-mix(in srgb, var(--text-muted) 60%, transparent);
+}
+
+.field-input:focus {
+  outline: none;
+  background: rgba(4, 8, 18, 0.75);
+  border-color: var(--aqua);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.18), 0 0 22px rgba(45, 212, 191, 0.28);
+}
+
+.field-suffix {
+  position: absolute;
+  right: 13px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.field-input.has-suffix {
+  padding-right: 58px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 480px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+select.field-input {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position: calc(100% - 19px) 50%, calc(100% - 14px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+/* ===================== Buttons ===================== */
+
+.btn {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  padding: 10px 16px;
+  background: var(--surface-2);
+  color: var(--text);
+  transition: transform var(--t-fast) var(--ease), background var(--t),
+    border-color var(--t), box-shadow var(--t), color var(--t);
+}
+
+.btn:hover {
+  background: var(--surface-3);
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(4, 8, 18, 0.4);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--grad-btn);
+  color: #06211d;
+  border: none;
+  box-shadow: 0 4px 18px rgba(45, 212, 191, 0.4), 0 0 26px rgba(249, 168, 212, 0.25);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 26px rgba(45, 212, 191, 0.55), 0 0 40px rgba(249, 168, 212, 0.4);
+  background: var(--grad-btn);
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.btn-segment {
+  background: rgba(4, 8, 18, 0.5);
+}
+
+.btn-segment[aria-pressed='true'] {
+  background: var(--grad-btn);
+  border-color: transparent;
+  color: #06211d;
+  box-shadow: 0 4px 16px rgba(45, 212, 191, 0.4), 0 0 22px rgba(249, 168, 212, 0.28);
+}
+
+.btn-segment[aria-pressed='true']:hover {
+  background: var(--grad-btn);
+}
+
+/* ===================== Results ===================== */
+
+.result-card {
+  margin-top: 24px;
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  backdrop-filter: blur(4px);
+  animation: page-in 0.4s var(--ease) both;
+  box-shadow: inset 0 0 24px var(--accent-soft);
+}
+
+.result-title {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.result-value {
+  font-family: var(--mono);
+  font-size: 30px;
+  font-weight: 800;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  word-break: break-word;
+  text-shadow: 0 0 30px rgba(45, 212, 191, 0.3);
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.result-row:last-child {
+  border-bottom: none;
+}
+
+.result-row-label {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.result-row-value {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent-bright);
+}
+
+.result-row-value.highlight {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--accent);
+  text-shadow: 0 0 16px var(--accent-glow);
+}
+
+.result-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ===================== Calculator keypads ===================== */
+
+.calc-display {
+  background: rgba(4, 8, 18, 0.7);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  text-align: right;
+  margin-bottom: 16px;
+  font-family: var(--mono);
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(45, 212, 191, 0.06);
+  transition: border-color var(--t), box-shadow var(--t);
+}
+
+.calc-display:focus-within {
+  border-color: rgba(45, 212, 191, 0.5);
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(45, 212, 191, 0.18);
+}
+
+.calc-display-expression {
+  font-size: 14px;
+  color: var(--text-muted);
+  min-height: 20px;
+  word-break: break-all;
+}
+
+.calc-display-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  word-break: break-all;
+  text-shadow: 0 0 24px rgba(94, 234, 212, 0.25);
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.keypad.keypad-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+@media (max-width: 560px) {
+  .keypad.keypad-6 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.key {
+  font: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  color: var(--text);
+  padding: 15px 8px;
+  cursor: pointer;
+  min-width: 0;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast),
+    background var(--t), color var(--t), border-color var(--t), filter var(--t);
+}
+
+.key:hover {
+  background: linear-gradient(180deg, var(--surface-3), var(--surface-2));
+  border-color: var(--border-strong);
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 18px rgba(45, 212, 191, 0.14);
+}
+
+.key:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+.key-operator {
+  background: linear-gradient(180deg, var(--accent-soft), var(--surface));
+  color: var(--accent-bright);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+}
+
+.key-operator:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.45), 0 0 22px var(--accent-glow);
+  filter: none;
+}
+
+.key-equals {
+  background: var(--grad-btn);
+  border: none;
+  color: #06211d;
+  box-shadow: 0 4px 0 rgba(4, 20, 24, 0.6), 0 0 22px rgba(45, 212, 191, 0.45),
+    0 0 34px rgba(249, 168, 212, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.key-equals:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 rgba(4, 20, 24, 0.6), 0 0 30px rgba(45, 212, 191, 0.6),
+    0 0 46px rgba(249, 168, 212, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.key-equals:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgba(4, 20, 24, 0.6), 0 0 14px rgba(45, 212, 191, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.key-function {
+  background: linear-gradient(180deg, rgba(4, 8, 18, 0.5), var(--surface));
+  font-size: 14.5px;
+  color: var(--text-muted);
+}
+
+.key-function:hover {
+  color: var(--text);
+}
+
+.key-danger {
+  color: var(--danger);
+}
+
+.key-danger:hover {
+  border-color: rgba(251, 113, 133, 0.5);
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.45), 0 0 18px rgba(251, 113, 133, 0.22);
+}
